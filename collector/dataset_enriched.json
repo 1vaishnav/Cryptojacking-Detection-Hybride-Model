@@ -1,0 +1,57 @@
+[
+  {
+    "url": "https://1movies.bz/home",
+    "metrics": {
+      "websocket": 0,
+      "wasm": 0,
+      "hash_function": 0,
+      "webworkers": 0,
+      "messageloop_load": 0,
+      "postmessage_load": 0,
+      "parallel_functions": 0
+    },
+    "cpu_model": {
+      "prediction": 0,
+      "label": "benign",
+      "features": {
+        "cpu_idle": 95.6,
+        "cpu_system": 2,
+        "cpu_total": 4.1,
+        "cpu_user": 2.1,
+        "diskio_sda1_read_bytes": 448738222080,
+        "diskio_sda1_time_since_update": 0,
+        "diskio_sda1_write_bytes": 206627451392,
+        "diskio_sda1_write_time": 0,
+        "diskio_sda_time_since_update": 0,
+        "diskio_sda_write_time": 0,
+        "mem_available": 550625280,
+        "mem_buffered": 0,
+        "mem_cached": 0,
+        "mem_free": 550625280,
+        "mem_total": 8279613440,
+        "mem_used": 7728988160,
+        "mem_used_percent": 93.3,
+        "net_eth0_bytes_recv": 19521294,
+        "net_eth0_bytes_sent": 12269788,
+        "net_eth0_dropin": 0,
+        "net_eth0_dropout": 0,
+        "net_eth0_packets_recv": 34316,
+        "net_eth0_packets_sent": 45963,
+        "proc_loadavg_1min": 0,
+        "proc_loadavg_5min": 0,
+        "proc_loadavg_15min": 0,
+        "proc_num_threads": 0,
+        "proc_num_running": 0,
+        "proc_num_sleeping": 0,
+        "proc_num_stopped": 0,
+        "proc_num_zombie": 0,
+        "uptime": 1762074861.4369874,
+        "cpu_frequency": 1700,
+        "cpu_count": 16
+      }
+    },
+    "web_model": null,
+    "finalVerdict": "benign",
+    "timestamp": "2025-11-02T09:14:21.681Z"
+  }
+]

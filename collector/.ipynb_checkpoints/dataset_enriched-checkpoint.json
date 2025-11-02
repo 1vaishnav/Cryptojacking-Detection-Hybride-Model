@@ -1,0 +1,25 @@
+[
+  {
+    "url": "https://cazeus-3678.com",
+    "metrics": {
+      "wasm_count": 0,
+      "wasm_bytes": 0,
+      "wasm_instantiations": 0,
+      "websocket_open": 0,
+      "websocket_msgs": 0,
+      "websocket_msgs_per_sec": 0,
+      "webworkers": 9,
+      "postmessage_count": 1,
+      "postmessage_per_sec": 0.083,
+      "hash_calls": 0,
+      "hash_per_sec": 0,
+      "scripts": 18,
+      "observed_seconds": 12
+    },
+    "ruleSuspicious": false,
+    "apiResponse": {
+      "error": "internal_server_error",
+      "message": "X has 15 features, but RandomForestClassifier is expecting 5 features as input."
+    }
+  }
+]

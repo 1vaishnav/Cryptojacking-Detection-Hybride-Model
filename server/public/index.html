@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cryptojacking Detection Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🧠 Real-time Cryptojacking Detection Dashboard</h1>
+  </header>
+
+  <main>
+    <section id="summary">
+      <div class="card">
+        <h2>System Summary</h2>
+        <div class="stats">
+          <div class="stat">
+            <h3 id="totalScans">0</h3>
+            <p>Total Scans</p>
+          </div>
+          <div class="stat benign">
+            <h3 id="benignCount">0</h3>
+            <p>Benign Sites</p>
+          </div>
+          <div class="stat crypto">
+            <h3 id="cryptoCount">0</h3>
+            <p>Cryptojacked Sites</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chartSection" class="card">
+      <h2>📈 CPU Usage Trend</h2>
+      <canvas id="cpuChart" width="400" height="150"></canvas>
+    </section>
+
+    <section id="results" class="card">
+      <h2>Detection Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Website</th>
+            <th>CPU Verdict</th>
+            <th>Web Verdict</th>
+            <th>Final Verdict</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>Developed for Cryptojacking Detection Project 🧩</p>
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

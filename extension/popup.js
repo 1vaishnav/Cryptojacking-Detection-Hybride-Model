@@ -1,32 +1,53 @@
-// popup.js
-document.getElementById("scan").addEventListener("click", async () => {
+document.getElementById("scanBtn").addEventListener("click", async () => {
+  const statusEl = document.getElementById("status");
+  const loaderEl = document.getElementById("loader");
+  const detailsEl = document.getElementById("details");
+
+  detailsEl.style.display = "none";
+  statusEl.textContent = "Scanning...";
+  statusEl.className = "";
+  loaderEl.style.display = "block";
+
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab) return alert("No active tab found.");
+  if (!tab) {
+    alert("No active tab found.");
+    return;
+  }
 
-  const url = tab.url;
-  // Show immediate feedback
-  document.getElementById("status").textContent = "Scanning...";
+  chrome.runtime.sendMessage({ action: "scanTab", url: tab.url }, (resp) => {
+    loaderEl.style.display = "none";
 
-  // Ask background to scan this tab
-  chrome.runtime.sendMessage({ action: "scanTab", url }, (resp) => {
     if (!resp) {
-      document.getElementById("status").textContent = "No response from background.";
-      return;
-    }
-    if (!resp.ok) {
-      document.getElementById("status").textContent = "Server error: " + (resp.error || "unknown");
+      statusEl.textContent = "Error: No response.";
+      statusEl.className = "result-unknown";
       return;
     }
 
-    // Show server result
-    const data = resp.data;
-    // data.results[0].finalVerdict expected; adapt if different
-    const result = data.results && data.results[0] ? data.results[0] : null;
-    if (result) {
-      document.getElementById("status").textContent = `Verdict: ${result.finalVerdict || "unknown"}`;
-      document.getElementById("details").textContent = JSON.stringify(result, null, 2);
-    } else {
-      document.getElementById("status").textContent = "No result returned.";
+    if (!resp.ok) {
+      statusEl.textContent = "Server Error";
+      statusEl.className = "result-bad";
+      return;
     }
+
+    const result = resp.data?.results?.[0];
+    if (!result) {
+      statusEl.textContent = "No result received.";
+      statusEl.className = "result-unknown";
+      return;
+    }
+
+    // Set verdict colors
+    if (result.finalVerdict === "Safe") {
+      statusEl.className = "result-good";
+    } else if (result.finalVerdict === "Malicious") {
+      statusEl.className = "result-bad";
+    } else {
+      statusEl.className = "result-unknown";
+    }
+
+    statusEl.textContent = `Verdict: ${result.finalVerdict}`;
+
+    detailsEl.style.display = "block";
+    detailsEl.textContent = JSON.stringify(result, null, 2);
   });
 });

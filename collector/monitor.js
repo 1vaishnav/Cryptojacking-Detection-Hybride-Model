@@ -2,8 +2,10 @@
 // Exports an async monitor(url) function that returns the 7-feature object.
 //
 // Usage (from server): const { monitor } = require('../collector/monitor');
-//                       await monitor('https://example.com');
-
+// 
+//http://emoticonfun.org/                      await monitor('https://example.com');
+// http://youssef-rabbaoui.de/
+//http://patrickdamiaens.be/
 const { chromium } = require("playwright");
 const fetch = require("node-fetch");
 

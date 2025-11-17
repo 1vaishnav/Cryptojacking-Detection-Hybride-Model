@@ -21,7 +21,7 @@ app.use(bodyParser.json({ limit: "1mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 3000;
-const SAVE_PATH = path.join(__dirname, "../collector/dataset_enriched.json");
+const SAVE_PATH = path.join(__dirname, "../collector/Crypto_detector/static/dataset_enriched.json");
 const CPU_MODEL_API = process.env.CPU_MODEL_API || "http://127.0.0.1:8000/check";
 const API_TIMEOUT = 5000;
 
@@ -80,10 +80,33 @@ function callWebModelLocal(webFeatures) {
 }
 
 // ---------------- HELPERS ----------------
-function saveResults(results) {
+function saveResults(newResults) {
   try {
-    fs.writeFileSync(SAVE_PATH, JSON.stringify(results, null, 2));
-    console.log("📁 Results saved to", SAVE_PATH);
+    let existing = [];
+
+    // ✅ Load existing results if file exists
+    if (fs.existsSync(SAVE_PATH)) {
+      const fileData = fs.readFileSync(SAVE_PATH, "utf-8");
+      if (fileData.trim().length > 0) {
+        existing = JSON.parse(fileData);
+      }
+    }
+
+    // ✅ Avoid duplicates (based on URL)
+    const existingUrls = new Set(existing.map(r => r.url));
+    const filteredNew = newResults.filter(r => !existingUrls.has(r.url));
+
+    if (filteredNew.length === 0) {
+      console.log("ℹ️ No new unique results to add.");
+      return;
+    }
+
+    // ✅ Append new results
+    const updated = existing.concat(filteredNew);
+
+    // ✅ Save back to JSON file
+    fs.writeFileSync(SAVE_PATH, JSON.stringify(updated, null, 2));
+    console.log(`📁 Appended ${filteredNew.length} new result(s) to ${SAVE_PATH}`);
   } catch (err) {
     console.warn("⚠️ Could not save results:", err.message || err);
   }
@@ -133,17 +156,29 @@ app.post("/tabs", async (req, res) => {
       if (cpuPred === 1) {
         console.log("⚠️ Suspicious CPU — invoking local web model...");
         const webFeatures = {
-          websocket: 1, wasm: 1, hash_function: 1,
-          webworkers: 0, messageloop_load: 0.3,
-          postmessage_load: 0.5, parallel_functions: 1
+          websocket: 1,
+          wasm: 1,
+          hash_function: 1,
+          webworkers: 0,
+          messageloop_load: 0.3,
+          postmessage_load: 0.5,
+          parallel_functions: 1
         };
         webModelResponse = await callWebModelLocal(webFeatures);
         finalVerdict = webModelResponse.label;
       } else {
-        console.log("✅ CPU benign — skipping web model.");
+        console.log("✅ CPU Normal — skipping web model.");
       }
 
-      const record = { url, metrics, cpu_model: cpuModelResponse, web_model: webModelResponse, finalVerdict, timestamp: new Date().toISOString() };
+      const record = {
+        url,
+        metrics,
+        cpu_model: cpuModelResponse,
+        web_model: webModelResponse,
+        finalVerdict,
+        timestamp: new Date().toISOString()
+      };
+
       results.push(record);
       console.log("✅ Final verdict for", url, "→", finalVerdict);
       console.log("-------------------------------------------");
@@ -152,7 +187,9 @@ app.post("/tabs", async (req, res) => {
     }
   }
 
+  // ✅ Append instead of overwrite
   saveResults(results);
+
   io.emit("newDetection", results);
   res.json({ status: "ok", processed: results.length, results });
 });

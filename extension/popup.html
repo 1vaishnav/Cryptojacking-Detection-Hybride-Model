@@ -1,19 +1,107 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <style>
-      body { font-family: Arial, sans-serif; width: 300px; padding: 10px; }
-      pre { white-space: pre-wrap; max-height: 200px; overflow: auto; background:#f4f4f4; padding:6px; border-radius:4px;}
-      #status { font-weight: bold; margin-top: 10px; }
-    </style>
-  </head>
-  <body>
-    <h3>Cryptojacking Monitor</h3>
-    <p>Click scan to analyze the active tab</p>
-    <button id="scan">Scan</button>
+<head>
+  <meta charset="utf-8" />
+  <title>Cryptojacking Monitor</title>
+
+  <style>
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      background: #f5f7fa;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-align: center;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin-top: 10px;
+    }
+
+    #scanBtn {
+      width: 100%;
+      background: #3a6df0;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+    }
+
+    #scanBtn:hover {
+      background: #2c56c9;
+    }
+
+    #status {
+      margin-top: 12px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Loader */
+    .loader {
+      margin: 10px auto;
+      display: none;
+      border: 4px solid #eee;
+      border-top: 4px solid #3a6df0;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 180px;
+      overflow: auto;
+      font-size: 12px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+
+    .result-good { color: #0a8a0a; }
+    .result-bad { color: #e53935; }
+    .result-unknown { color: #e68a00; }
+
+  </style>
+</head>
+
+<body>
+
+  <h2>🔍 Cryptojacking Monitor</h2>
+
+  <div class="card">
+    <p style="text-align:center;">Click the button to analyze the active tab for suspicious mining activity.</p>
+
+    <button id="scanBtn">Start Scan</button>
+
+    <div class="loader" id="loader"></div>
     <div id="status">Idle</div>
-    <pre id="details"></pre>
-    <script src="popup.js"></script>
-  </body>
+
+    <pre id="details" style="display:none;"></pre>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
 </html>

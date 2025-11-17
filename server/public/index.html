@@ -8,13 +8,28 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h1>🧠 Real-time Cryptojacking Detection Dashboard</h1>
+  <header class="page-header">
+    <div class="branding">
+      <span>Realtime SOC Panel</span>
+      <h1>🧠 Cryptojacking Detection Dashboard</h1>
+    </div>
+    <div class="header-actions">
+      <button class="accent-button" type="button">Download Report</button>
+    </div>
   </header>
 
-  <main>
-    <section id="summary">
-      <div class="card">
+  <main class="dashboard">
+    <section id="hero" class="card hero-card">
+      <div class="mission">
+        <p>Monitor CPU anomalies, isolate malicious scripts, and react before mining malware drains your
+          infrastructure. The dashboard fuses telemetry and classification verdicts into a single command
+          center.</p>
+        <div class="section-meta">
+          <span>Last sync <strong id="lastSync">–</strong></span>
+          <span>Agents online <strong>12 / 12 healthy</strong></span>
+        </div>
+      </div>
+      <div id="summary" class="summary">
         <h2>System Summary</h2>
         <div class="stats">
           <div class="stat">
@@ -34,24 +49,32 @@
     </section>
 
     <section id="chartSection" class="card">
-      <h2>📈 CPU Usage Trend</h2>
-      <canvas id="cpuChart" width="400" height="150"></canvas>
+      <div class="section-meta">
+        <h2>📈 CPU Usage Trend</h2>
+        <span>Trailing 5-minute sample window</span>
+      </div>
+      <canvas id="cpuChart" width="400" height="160"></canvas>
     </section>
 
     <section id="results" class="card">
-      <h2>Detection Results</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Website</th>
-            <th>CPU Verdict</th>
-            <th>Web Verdict</th>
-            <th>Final Verdict</th>
-          </tr>
-        </thead>
-        <tbody id="resultsBody"></tbody>
-      </table>
+      <div class="section-meta">
+        <h2>Detection Results</h2>
+        <span>Latest telemetry classifications streaming in real time</span>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Website</th>
+              <th>CPU Verdict</th>
+              <th>Web Verdict</th>
+              <th>Final Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 
